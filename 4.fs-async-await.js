@@ -1,6 +1,6 @@
 const { readFile } = require('node:fs/promises');
 
-//IIFE - Immediately Invoked Function Expression
+// IIFE - Immediately Invoked Function Expression
 
 (
     async () => {
