@@ -1,12 +1,13 @@
 const http = require('node:http')
+const { findAvailablePort } = require('./10.free-port')
+
+const port = process.env.PORT ?? 3000
 
 const server = http.createServer((req, res) => {
     console.log('request received')
     res.end('Hola mundo.')
 })
 
-// El puerto 0 escoge un puerto disponible
-// no recomendable para producción.
-server.listen(0, () => {
-    console.log(`server listening on port http://localhost:${server.address().port}`)
+findAvailablePort(1234).then(port => {
+    console.log(`server listening on port http://localhost:${port}`)
 })
