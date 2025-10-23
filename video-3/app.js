@@ -1,11 +1,13 @@
 const express = require('express') // requiere -> commonJS
 const crypto = require('node:crypto')
+const cors = require('cors')
 const movies = require('./movies.json')
 const { validateMovie, validatePartialMovie } = require('./schemas/movies')
 
 
 const app = express()
 app.use(express.json())
+app.use(cors()) // este pone asterico por defecto
 app.disable('x-powered-by') //deshabilitar el header x-powered-by: express
 
 // métodos normales: GET/HEAD/POST
@@ -20,12 +22,6 @@ const ACCEPTED_ORIGINS = [
 ]
 // Todos los recursos que sean MOVIES se identifican con /movies
 app.get('/movies', (req, res) => {
-    const origin = req.header('origin')
-    if (ACCEPTED_ORIGINS.includes(origin) || !origin) {
-        res.header('Access-Control-Allow-Origin', origin)
-    }
-
-
     const { genre } = req.query
     if (genre) {
         const filteredMovies = movies.filter(
@@ -64,12 +60,6 @@ app.post('/movies', (req, res) => {
 })
 
 app.delete('/movies/:id', (req, res) => {
-    const origin = req.header('origin')
-    if (ACCEPTED_ORIGINS.includes(origin) || !origin) {
-        res.header('Access-Control-Allow-Origin', origin)
-    }
-
-
     const { id } = req.params
     const movieIndex = movies.findIndex(movie => movie.id == id)
 
@@ -108,15 +98,6 @@ app.patch('/movies/:id', (req, res) => {
 
     return res.json(updateMovie)
 
-})
-
-app.options('/movies/:id', (req, res) => {
-    const origin = req.header('origin')
-    if (ACCEPTED_ORIGINS.includes(origin) || !origin) {
-        res.header('Access-Control-Allow-Origin', origin)
-        res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, PATCH')
-    }
-    res.send(200)
 })
 
 const PORT = process.env.PORT ?? 1234
