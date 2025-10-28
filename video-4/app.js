@@ -1,4 +1,4 @@
-import express, { json } from 'express' 
+import express, { json } from 'express'
 import { moviesRouter } from './routes/movies.js'
 import { corsMiddleware } from './middlewares/cors.js'
 
@@ -6,12 +6,6 @@ const app = express()
 app.use(json())
 app.use(corsMiddleware()) // este pone asterico por defecto
 app.disable('x-powered-by') //deshabilitar el header x-powered-by: express
-
-// métodos normales: GET/HEAD/POST
-// métodos complejos: PUT/DELETE/PATCH
-
-// CORS PRE-Flight
-// OPTIONS
 
 app.use('/movies', moviesRouter)
 
